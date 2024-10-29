@@ -42,27 +42,19 @@ def moveZeroRight(z,s):
         return new_s
     else:
         return None
-    
-
-def getZeroPosition(state):
-    pos = np.where(state == 0)
-    return (pos[0][0], pos[1][0])  # Return as (row, col)
 
 def get_states(state):
     newStates = []
-    z = getZeroPosition(state)
+    z = np.where(state == 0)
 
     for move in [moveZeroUp,moveZeroDown,moveZeroLeft,moveZeroRight]:
         currState = move(z,state)
         if currState is not None:
             newStates.append(currState)
     return newStates
+            
 
-
-
-
-
-def ucs(goalState,state):
+def search(goalState,state):
     visited = set()
 
 
