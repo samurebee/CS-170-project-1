@@ -1,5 +1,6 @@
 import numpy as np
 import heapq
+import re
 
 def moveZeroUp(z,s):
     if(z[0][0] != 0):
