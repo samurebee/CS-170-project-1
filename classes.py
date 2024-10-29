@@ -51,6 +51,7 @@ class Problem:
         print(state[1][0] , state[1][1], state[1][2], sep = " ")
         print(state[2][0] , state[2][1], state[2][2], sep = " ")
         print("\n")
+        
 class Node:
     def __init__(self, value, hCost = 0, gCost = 0, fCost = 0):
         self.value = value
