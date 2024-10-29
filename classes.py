@@ -4,6 +4,7 @@ class Problem:
 
     def __init__(self, initialState = np.array([[1,2,3], [4,8,0], [7,6,5]])):
         self.initialState = initialState
+        self.currState = initialState
         self.goalState = np.array([[1,2,3], [4,5,6], [7,8,0]])
     
     def moveZeroUp(z,s):
@@ -61,14 +62,6 @@ class Node:
         self.fCost = fCost 
     def addChild(self, child):
         self.children.append(child)
-    def returnValue(self):
-        return self.value
-    def returnhCost(self):
-        return self.hCost
-    def returngCost(self):
-        return self.gCost
-    def returnfCost(self):
-        return self.fCost
     
 
 class Tree:
