@@ -3,7 +3,7 @@ import heapq
 import re
 import classes
 
-def is_valid_input(numbers): #checks if input has 1 of each # from 0-8
+def isValidInput(numbers): #checks if input has 1 of each # from 0-8
     return sorted(numbers) == list(range(9))
 
 def getRowInput(row_num):
@@ -42,7 +42,7 @@ def populate():
         row2 = getRowInput(2)
         row3 = getRowInput(3)
 
-        if is_valid_input(row1+row2+row3):
+        if isValidInput(row1+row2+row3):
             break  # Exit the loop if input is valid
         else:
             print("Invalid puzzle! Make sure you use all numbers from 0-8 with no repetition")
