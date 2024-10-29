@@ -50,7 +50,13 @@ def populate():
     initialState = np.array([row1, row2, row3])
     return initialState
          
-        
+def misplaced_tile_heuristic(state, goal_state):
+    misplaced_count = 0
+    for i in range(3):
+        for j in range(3):
+            if state[i][j] != 0 and state[i][j] != goal_state[i][j]:
+                misplaced_count += 1
+    return misplaced_count
             
 
 def search(goalState,state):
