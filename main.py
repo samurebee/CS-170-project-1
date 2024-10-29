@@ -29,7 +29,7 @@ while(1):
         # A* with the Misplaced Tile heuristic
         break
     elif(userInput == "3"):
-        # A* with the Euclidean distance heuristic
+        func.AStarEuclidean(puzzle)
         break
     else:
         print("Invalid choice. Please choose from the options prompted")

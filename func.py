@@ -112,7 +112,6 @@ def sortFrontier(frontier, stateToSort, fCost):
         frontier.append([stateToSort, fCost])    
 
 def AStarEuclidean(puzzle):
-
     initialStateCost = calculateEuclideanHeuristicCost(puzzle.initialState, puzzle.goalState)
     nodeState = classes.Node(puzzle.initialState, initialStateCost, 0, initialStateCost)
     parentNode = nodeState

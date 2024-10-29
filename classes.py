@@ -7,7 +7,7 @@ class Problem:
         self.currState = initialState
         self.goalState = np.array([[1,2,3], [4,5,6], [7,8,0]])
     
-    def moveZeroUp(z,s):
+    def moveZeroUp(self,z,s):
         if(z[0][0] != 0):
             new_s = np.copy(s)
             valueToSwitch = s[z[0][0] - 1][z[0][1]]
@@ -15,9 +15,9 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            return None
+            return s
 
-    def moveZeroDown(z,s):
+    def moveZeroDown(self,z,s):
         if(z[0][0] != 2):
             new_s = np.copy(s)
             valueToSwitch = s[z[0][0] + 1][z[0][1]]
@@ -25,9 +25,9 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            return None
+            return s
 
-    def moveZeroLeft(z,s):
+    def moveZeroLeft(self,z,s):
         if(z[0][1] != 0):
             new_s = np.copy(s)
             valueToSwitch = s[z[0][0]][z[0][1] - 1]
@@ -35,9 +35,9 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            return None
+            return s
 
-    def moveZeroRight(z,s):
+    def moveZeroRight(self,z,s):
         if(z[0][1] != 2):
             new_s = np.copy(s)
             valueToSwitch = s[z[0][0]][z[0][1] + 1]
@@ -45,13 +45,12 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            return None
+            return s
 
-    def printState(state):
+    def printState(self,state):
         print(state[0][0] , state[0][1], state[0][2], sep = " ")
         print(state[1][0] , state[1][1], state[1][2], sep = " ")
         print(state[2][0] , state[2][1], state[2][2], sep = " ")
-        print("\n")
         
 class Node:
     def __init__(self, value, hCost = 0, gCost = 0, fCost = 0):
