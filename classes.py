@@ -8,7 +8,7 @@ class Problem:
     
     def moveZeroUp(z,s):
         if(z[0][0] != 0):
-            new_s = s
+            new_s = np.copy(s)
             valueToSwitch = s[z[0][0] - 1][z[0][1]]
             new_s[z[0][0] - 1][z[0][1]] = 0
             new_s[z[0][0]][z[0][1]] = valueToSwitch
@@ -18,7 +18,7 @@ class Problem:
 
     def moveZeroDown(z,s):
         if(z[0][0] != 2):
-            new_s = s
+            new_s = np.copy(s)
             valueToSwitch = s[z[0][0] + 1][z[0][1]]
             new_s[z[0][0] + 1][z[0][1]] = 0
             new_s[z[0][0]][z[0][1]] = valueToSwitch
@@ -28,7 +28,7 @@ class Problem:
 
     def moveZeroLeft(z,s):
         if(z[0][1] != 0):
-            new_s = s
+            new_s = np.copy(s)
             valueToSwitch = s[z[0][0]][z[0][1] - 1]
             new_s[z[0][0]][z[0][1] - 1] = 0
             new_s[z[0][0]][z[0][1]] = valueToSwitch
@@ -38,7 +38,7 @@ class Problem:
 
     def moveZeroRight(z,s):
         if(z[0][1] != 2):
-            new_s = s
+            new_s = np.copy(s)
             valueToSwitch = s[z[0][0]][z[0][1] + 1]
             new_s[z[0][0]][z[0][1] + 1] = 0
             new_s[z[0][0]][z[0][1]] = valueToSwitch
