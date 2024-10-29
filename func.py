@@ -57,7 +57,106 @@ def misplaced_tile_heuristic(state, goal_state):
             if state[i][j] != 0 and state[i][j] != goal_state[i][j]:
                 misplaced_count += 1
     return misplaced_count
-            
+
+def calculateEuclideanHeuristicCost(state, goalState):
+        cost = 0
+        length = len(state)
+        for row in range(0,length):
+            for column in range(0,length):
+                if state[row][column] != goalState[row][column]:
+                    goalIndex = np.argwhere(goalState == state[row][column])
+                    cost += ((goalIndex[0][0] - row) ** 2 + (goalIndex[0][1] - column) ** 2) ** 0.5
+        return cost
+
+def checkIfStatesAreIdentical(state1, state2):
+    length = len(state1)
+    for row in range(0,3):
+            for column in range(0,3): 
+                if (state1[row][column] != state2[row][column]):
+                    return False
+    return True
+
+def getStates(puzzle, explored, frontier):
+    newStates = []
+
+    for move in [puzzle.moveZeroUp,puzzle.moveZeroDown,puzzle.moveZeroLeft,puzzle.moveZeroRight]:
+        z = np.argwhere(puzzle.currState == 0)
+        newState = move(z,puzzle.currState)
+        if ((checkIfStatesAreIdentical(puzzle.currState,newState)) == False):
+            flag = False
+            if (len(explored) != 0):
+                for states in explored:
+                    if ((checkIfStatesAreIdentical(newState,states)) == True):
+                        flag = True
+                        break
+            for states in frontier:
+                if(flag == True):
+                    break
+                if ((checkIfStatesAreIdentical(newState,states[0])) == True):
+                    flag = True
+                    break
+            if (flag == False):
+                newStates.append(newState)
+    return newStates
+
+def sortFrontier(frontier, stateToSort, fCost):
+    count = 0
+    if (len(frontier) != 0):
+        for state in frontier:
+            if (state[1] > fCost):
+                frontier.insert(count, [stateToSort, fCost])
+                break
+            count += 1
+        return frontier
+    else:
+        frontier.append([stateToSort, fCost])    
+
+def AStarEuclidean(puzzle):
+
+    initialStateCost = calculateEuclideanHeuristicCost(puzzle.initialState, puzzle.goalState)
+    nodeState = classes.Node(puzzle.initialState, initialStateCost, 0, initialStateCost)
+    parentNode = nodeState
+    # puzzleTree = Tree(puzzle.initialState) 
+    frontier = [[puzzle.initialState, initialStateCost]]
+    explored = []
+    gCost = 1
+    print("Expanding State")
+    puzzle.printState(puzzle.currState)
+    while(1):
+        if(len(frontier) == 0):
+            print("Failed")
+            return -1
+        if((checkIfStatesAreIdentical(puzzle.currState,puzzle.goalState)) == True):
+            if((checkIfStatesAreIdentical(puzzle.currState, puzzle.initialState)) == False):
+                hCost = calculateEuclideanHeuristicCost(puzzle.currState,puzzle.goalState)
+                fCost = hCost + gCost
+                newNode = classes.Node(puzzle.currState, hCost,gCost, fCost)
+            frontier.clear()
+            explored.append(puzzle.currState)
+            print("Goal!!!")
+            break
+        if (gCost != 1):
+            print("The best state to expand with g(n) = %d and h(n) = %f is" % (newNode.gCost, newNode.hCost))
+            puzzle.printState(frontier[0][0])
+            print("Expanding this Node")
+        explored.append(puzzle.currState)
+        frontier.pop(0)
+        newStates = getStates(puzzle, explored, frontier)
+        if (len(newStates) != 0):
+            for state in newStates:
+                fCost = 0
+                hCost = calculateEuclideanHeuristicCost(state, puzzle.goalState)
+                fCost = hCost + gCost
+                newNode = classes.Node(state, hCost, gCost, fCost)
+                # puzzleTree.addNode(newNode, parentNode)
+                sortFrontier(frontier, state, fCost)
+        gCost += 1
+        # parentNode = puzzle.currState
+        puzzle.currState = frontier[0][0]
+        while(1):
+            userInput = input("Input: ")
+            if(userInput == "1"):
+                break      
 
 def search(goalState,state):
     visited = set()
