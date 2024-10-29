@@ -1,5 +1,4 @@
 import numpy as np
-import re
 
 class Problem:
 
@@ -15,8 +14,7 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            print("Can not move up")
-            return s
+            return None
 
     def moveZeroDown(z,s):
         if(z[0][0] != 2):
@@ -26,8 +24,7 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            print("Can not move down")
-            return s
+            return None
 
     def moveZeroLeft(z,s):
         if(z[0][1] != 0):
@@ -37,8 +34,7 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            print("Can not move left")
-            return s
+            return None
 
     def moveZeroRight(z,s):
         if(z[0][1] != 2):
@@ -48,11 +44,34 @@ class Problem:
             new_s[z[0][0]][z[0][1]] = valueToSwitch
             return new_s
         else:
-            print("Can not move right")
-            return s
+            return None
 
     def printState(state):
         print(state[0][0] , state[0][1], state[0][2], sep = " ")
-        print(state[1][0] , state[1][1], s[1][2], sep = " ")
-        print(state[2][0] , state[2][1], s[2][2], sep = " ")
+        print(state[1][0] , state[1][1], state[1][2], sep = " ")
+        print(state[2][0] , state[2][1], state[2][2], sep = " ")
         print("\n")
+class Node:
+    def __init__(self, value, hCost = 0, gCost = 0, fCost = 0):
+        self.value = value
+        self.children = []
+        self.hCost = hCost
+        self.gCost = gCost
+        self.fCost = fCost 
+    def addChild(self, child):
+        self.children.append(child)
+    def returnValue(self):
+        return self.value
+    def returnhCost(self):
+        return self.hCost
+    def returngCost(self):
+        return self.gCost
+    def returnfCost(self):
+        return self.fCost
+    
+
+class Tree:
+    def __init__(self,root):
+        self.root = root
+    def addNode(self, newNode, parent=None):
+        parent.addChild(newNode)
