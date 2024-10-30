@@ -27,7 +27,7 @@ while(1):
         func.ucs(puzzle)
         break
     elif(userInput == "2"):
-        # A* with the Misplaced Tile heuristic
+        func.AStarMisplaced(puzzle)
         break
     elif(userInput == "3"):
         func.AStarEuclidean(puzzle)
