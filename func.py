@@ -125,35 +125,44 @@ def search(puzzle, algorithm):
     
     initialStateCost = algorithmChoice(algorithm, puzzle.initialState, puzzle.goalState)
     frontier = [[puzzle.initialState, initialStateCost, 0, initialStateCost]]
+    maxFrontier = 1
     explored = []
     gCost = 0
     print("Expanding State")
     puzzle.printState(puzzle.currState)
+    expanded = 0
     while(1):
         if(len(frontier) == 0):
             print("Failed")
             return -1
         if((checkIfStatesAreIdentical(puzzle.currState,puzzle.goalState)) == True):
-            if((checkIfStatesAreIdentical(puzzle.currState, puzzle.initialState)) == False):
-                hCost = algorithmChoice(algorithm, puzzle.currState, puzzle.goalState)
-                fCost = hCost + gCost
-            frontier.clear()
             explored.append(puzzle.currState)
             print("Goal!!!")
+
+            print("To solve this problem the search algorithm expanded a total of %d nodes." % (expanded))
+            print("The maximum number of nodes in the queue at one time: %d." % (maxFrontier))
+            print("The depth of the goal node was %d." % (frontier[0][2]))
+            frontier.clear()
             break
         if (gCost != 0):
-            print("The best state to expand with g(n) = %d and h(n) = %f is" % (frontier[0][2], frontier[0][3]))
+            if(algorithm == 3):
+                print("The best state to expand with g(n) = %d and h(n) = %f is" % (frontier[0][2], frontier[0][3]))
+            else:
+                print("The best state to expand with g(n) = %d and h(n) = %d is" % (frontier[0][2], frontier[0][3]))
             puzzle.printState(frontier[0][0])
             print("Expanding this Node")
         gCost = frontier[0][2] + 1
         explored.append(puzzle.currState)
         frontier.pop(0)
+        expanded += 1
         newStates = getStates(puzzle, explored, frontier)
         if (len(newStates) != 0):
             for state in newStates:
                 hCost = algorithmChoice(algorithm, state, puzzle.goalState)
                 fCost = hCost + gCost
                 sortFrontier(frontier, state, fCost, gCost, hCost)
+                if(len(frontier) > maxFrontier):
+                    maxFrontier = len(frontier)
         if(len(frontier) != 0):
             puzzle.currState = frontier[0][0]
 
