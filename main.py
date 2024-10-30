@@ -24,13 +24,13 @@ while(1):
     userInput = input()
     if(userInput == "1"):
         # Uniform Cost Search
-        func.ucs(puzzle)
+        func.search(puzzle, 1)
         break
     elif(userInput == "2"):
-        func.AStarMisplaced(puzzle)
+        func.search(puzzle, 2)
         break
     elif(userInput == "3"):
-        func.AStarEuclidean(puzzle)
+        func.search(puzzle, 3)
         break
     else:
         print("Invalid choice. Please choose from the options prompted")

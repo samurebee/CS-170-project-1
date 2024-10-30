@@ -99,26 +99,34 @@ def getStates(puzzle, explored, frontier):
                 newStates.append(newState)
     return newStates
 
-def sortFrontier(frontier, stateToSort, fCost):
+def sortFrontier(frontier, stateToSort, fCost, gCost, hCost):
     count = 0
+    flag = 0
     if (len(frontier) != 0):
         for state in frontier:
             if (state[1] > fCost):
-                frontier.insert(count, [stateToSort, fCost])
+                frontier.insert(count, [stateToSort, fCost, gCost, hCost])
+                flag = 1
                 break
             count += 1
-        return frontier
-    else:
-        frontier.append([stateToSort, fCost])    
+    if(flag == 0):
+        frontier.append([stateToSort, fCost, gCost, hCost])
+    return frontier 
 
-def AStarEuclidean(puzzle):
-    initialStateCost = calculateEuclideanHeuristicCost(puzzle.initialState, puzzle.goalState)
-    nodeState = classes.Node(puzzle.initialState, initialStateCost, 0, initialStateCost)
-    parentNode = nodeState
-    # puzzleTree = Tree(puzzle.initialState) 
-    frontier = [[puzzle.initialState, initialStateCost]]
+def algorithmChoice(a, currState, goalState):
+    if(a == 1):
+        return 0
+    elif(a == 2):
+        return misplaced_tile_heuristic(currState, goalState)
+    else:
+        return calculateEuclideanHeuristicCost(currState, goalState)
+
+def search(puzzle, algorithm):
+    
+    initialStateCost = algorithmChoice(algorithm, puzzle.initialState, puzzle.goalState)
+    frontier = [[puzzle.initialState, initialStateCost, 0, initialStateCost]]
     explored = []
-    gCost = 1
+    gCost = 0
     print("Expanding State")
     puzzle.printState(puzzle.currState)
     while(1):
@@ -127,35 +135,27 @@ def AStarEuclidean(puzzle):
             return -1
         if((checkIfStatesAreIdentical(puzzle.currState,puzzle.goalState)) == True):
             if((checkIfStatesAreIdentical(puzzle.currState, puzzle.initialState)) == False):
-                hCost = calculateEuclideanHeuristicCost(puzzle.currState,puzzle.goalState)
+                hCost = algorithmChoice(algorithm, puzzle.currState, puzzle.goalState)
                 fCost = hCost + gCost
-                newNode = classes.Node(puzzle.currState, hCost,gCost, fCost)
             frontier.clear()
             explored.append(puzzle.currState)
             print("Goal!!!")
             break
-        if (gCost != 1):
-            print("The best state to expand with g(n) = %d and h(n) = %f is" % (newNode.gCost, newNode.hCost))
+        if (gCost != 0):
+            print("The best state to expand with g(n) = %d and h(n) = %f is" % (frontier[0][2], frontier[0][3]))
             puzzle.printState(frontier[0][0])
             print("Expanding this Node")
+        gCost = frontier[0][2] + 1
         explored.append(puzzle.currState)
         frontier.pop(0)
         newStates = getStates(puzzle, explored, frontier)
         if (len(newStates) != 0):
             for state in newStates:
-                fCost = 0
-                hCost = calculateEuclideanHeuristicCost(state, puzzle.goalState)
+                hCost = algorithmChoice(algorithm, state, puzzle.goalState)
                 fCost = hCost + gCost
-                newNode = classes.Node(state, hCost, gCost, fCost)
-                # puzzleTree.addNode(newNode, parentNode)
-                sortFrontier(frontier, state, fCost)
-        gCost += 1
-        # parentNode = puzzle.currState
-        puzzle.currState = frontier[0][0]
-        while(1):
-            userInput = input("Input: ")
-            if(userInput == "1"):
-                break      
+                sortFrontier(frontier, state, fCost, gCost, hCost)
+        if(len(frontier) != 0):
+            puzzle.currState = frontier[0][0]
 
 def ucs(puzzle):
     # Priority queue: stores (gCost, state (as a tuple), path from start to current state)
