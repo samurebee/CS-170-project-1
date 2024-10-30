@@ -22,17 +22,6 @@ def getRowInput(row_num):
         except ValueError as e:
             print(f"Invalid input: {e}. Please try again.")
 
-                
-
-def get_states(state):
-    newStates = []
-    z = np.where(state == 0)
-
-    for move in [classes.moveZeroUp,classes.moveZeroDown,classes.moveZeroLeft,classes.moveZeroRight]:
-        currState = move(z,state)
-        if currState is not None:
-            newStates.append(currState)
-    return newStates
 
 def populate():
     
@@ -166,61 +155,6 @@ def search(puzzle, algorithm):
         if(len(frontier) != 0):
             puzzle.currState = frontier[0][0]
 
-def ucs(puzzle):
-    # Priority queue: stores (gCost, state (as a tuple), path from start to current state)
-    frontier = []
-    explored = []  # List to keep track of explored states
-
-    # Convert the initial state to a tuple and push it onto the queue with gCost = 0
-    initial_state_tuple = tuple(puzzle.initialState.flatten())
-    heapq.heappush(frontier, (0, initial_state_tuple, [puzzle.initialState]))
-
-    print("Starting Uniform Cost Search...")
-
-    while frontier:
-        # Get the state with the lowest gCost
-        current_cost, current_state_tuple, path = heapq.heappop(frontier)
-        current_state = np.array(current_state_tuple).reshape(puzzle.initialState.shape)
-
-        print(f"\nExpanding Node with gCost={current_cost}:")
-        puzzle.printState(current_state)  # Print the current state
-
-        # If the goal state is reached, print the final path and exit
-        if np.array_equal(current_state, puzzle.goalState):
-            print("\nGoal reached! Solution path:")
-            for step in path:
-                puzzle.printState(step)
-                print("-----")
-            print(f"Total cost: {current_cost}")
-            return
-
-        # Mark the current state as explored
-        explored.append(current_state_tuple)
-
-        # Generate all possible new states from the current state
-        zero_pos = np.argwhere(current_state == 0)  # Position of 0 (blank tile)
-        new_states = [
-            puzzle.moveZeroUp(zero_pos, current_state),
-            puzzle.moveZeroDown(zero_pos, current_state),
-            puzzle.moveZeroLeft(zero_pos, current_state),
-            puzzle.moveZeroRight(zero_pos, current_state)
-        ]
-
-        for state in new_states:
-            if state is not None:
-                # Convert state to a tuple for comparability
-                state_tuple = tuple(state.flatten())
-
-                # Check if the state is already explored
-                if state_tuple in explored:
-                    continue
-
-                # Add the new state to the frontier with updated gCost
-                new_cost = current_cost + 1  # Increment path cost
-                new_path = path + [state]
-                heapq.heappush(frontier, (new_cost, state_tuple, new_path))
-
-    print("No solution found.")
 
 
 
