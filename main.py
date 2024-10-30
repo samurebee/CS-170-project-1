@@ -24,6 +24,7 @@ while(1):
     userInput = input()
     if(userInput == "1"):
         # Uniform Cost Search
+        func.ucs(puzzle)
         break
     elif(userInput == "2"):
         # A* with the Misplaced Tile heuristic
